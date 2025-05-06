@@ -36,4 +36,14 @@ $user = Auth::user();
 $token = $user->createToken('auth_token')->plainTextToken;
 return response()->json(['token' => $token, 'user' => $user], 201);
 }
+public function logout(Request $request)
+    {
+        $request->user()->tokens->each(function ($token) {
+            $token->delete();
+        });
+
+        return response()->json([
+            'message' => 'Successfully logged out'
+        ]);
+    }
 }
